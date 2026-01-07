@@ -1,0 +1,1 @@
+echo $file | cut -d'.' -f2

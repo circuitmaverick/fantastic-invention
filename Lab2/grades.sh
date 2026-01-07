@@ -1,14 +1,13 @@
 #!/bin/bash
 echo "Enter the marks:"
 read marks
-# grade=""
+# echo  
 case $((marks/10)) in
-    10) grade="O";;
-    9) grade="O";;
-    8) grade="E";;
-    7) grade="A";;
-    6) grade="B";;
-    5) grade="C";;
-    *) grade="F";;
+    10) echo O ;;
+    9) echo O ;;
+    8) echo E ;;
+    7) echo A ;;
+    6) echo B ;;
+    5) echo C ;;
+    *) echo F ;;
 esac
-echo $grade

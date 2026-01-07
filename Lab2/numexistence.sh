@@ -2,7 +2,7 @@
 
 echo "Enter a number"
 read x
-if [ $x -le 100 -a $x -ge 0 ]
+if [ $x -le 100 -a $x -ge 1 ]
 then
     echo "Number exists between 1 and 100"
 else
