@@ -22,6 +22,6 @@ do
             read file
             `cp $file $file-copied`
             ;;
-        5)  break;;
+        5)  exit 0;;
     esac
 done
