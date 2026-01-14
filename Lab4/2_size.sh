@@ -11,7 +11,7 @@ mkdir x_$dir_no
 for file in "${files[@]}"
 do
     if [ -f "$file" ]; then
-        size=$(du -k "$file" | cut -f1)
+        size=$(du -b "$file" | cut -f1)
 
         if [ $((current_size + size)) -gt $X ]; then
             dir_no=$((dir_no + 1))
