@@ -93,7 +93,6 @@ int main() {
             // no process exists in the current time, increment current time by 1
             currentTime++;
         }
-        // displayProcesses(head);
     }
     displayProcesses(head);
 }
