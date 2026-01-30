@@ -2,7 +2,7 @@
 
 while [ true ]
 do
-    echo "----MENU----"
+    # echo "----MENU----"
     echo "1 HOME DIRECTORY"
     echo "2 BASH VERSION"
     echo "3 HOST NAME"
