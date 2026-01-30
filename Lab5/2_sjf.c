@@ -70,14 +70,6 @@ PROCESS* getNextProcessToExecute(PROCESS *head, int currentTime) {
     return shortest;
 }
 
-bool incompleteProcessExist(PROCESS *head) {
-    bool flag = false;
-    while(head) {
-        if(!head->completed) { flag=true; break; }
-    }
-    return flag;
-}
-
 int main() {
     int count = 0, completed = 0;
     PROCESS *head = getProcesses(&count);
