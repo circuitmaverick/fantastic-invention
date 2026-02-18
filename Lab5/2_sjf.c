@@ -38,26 +38,6 @@ void displayProcesses(PROCESS *head) {
     }
 }
 
-void sortProcesses(PROCESS **head) {
-    PROCESS *curr = *head;
-    while(curr->next) {
-        PROCESS *temp = curr->next;
-        while(temp) {
-            if(curr->arrivalTime > temp->arrivalTime) {
-                PROCESS dummy = *temp;
-                temp->pid = curr->pid;
-                temp->arrivalTime = curr->arrivalTime;
-                temp->burstTime = curr->burstTime;
-                curr->pid = dummy.pid;
-                curr->arrivalTime = dummy.arrivalTime;
-                curr->burstTime = dummy.burstTime;
-            }
-            temp = temp->next;
-        }
-        curr = curr->next;
-    }
-}
-
 PROCESS* getNextProcessToExecute(PROCESS *head, int currentTime) {
     PROCESS *shortest = NULL;
     while(head) {
