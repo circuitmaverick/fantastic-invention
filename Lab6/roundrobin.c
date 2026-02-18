@@ -10,11 +10,10 @@ typedef struct process {
     int wt;
     int tat;
     bool completed;
+    bool inQueue;
 } PROCESS;
 
-void push(PROCESS *readyQ[], PROCESS *p, int *front, int *rear) {
-
-}
+#define MAX 100
 
 
 int main() {
@@ -29,12 +28,15 @@ int main() {
         printf("Process PID%d\t>\t", p[i].pid);
         scanf("%d %d", &p[i].at, &p[i].bt);
         p[i].rt = p[i].bt;
-        p[i].completed = false;
+        p[i].completed = p[i].inQueue = false;
     }
 
     // initiate ready queue
-    int front = -1, rear = -1;
-    PROCESS *readyQ[count];
+    int front = 0, rear = 0;
+    int queue[MAX];
+
+    #define ENQUEUE(x) queue[rear++] = x
+    #define DEQUEUE(x) queue[front++]
 
     // initiate completed count
     int completed = 0;
@@ -43,22 +45,54 @@ int main() {
     int ct = 0, tq;
     printf("Enter time quantum: "); scanf("%d", &tq);
 
-    while(completed != count) {
-        // check arrived processes and copy to ready queue
-        for(int i=0; i<count; i++) {
-            if(p[i].at <= ct && !p[i].completed) {
-                // push the process into ready queue
-                rear = (rear+1)%count;
-                if(rear==front) { printf("\nQUEUE IS FULL\n"); exit(0); }
-                if(front == -1) front++;
-
-                // check if more than one process exists in the ready queue of the same arrival time,
-                // then sort those according to less remaining time
-                if(front != rear) {
-                    if(p[rear])
-                }
-            }
+    // add all the processes arrived at time 0 to the queue
+    for(int i=0; i<count; i++)
+        if(p[i].at == 0) {
+            ENQUEUE(i);
+            p[i].inQueue = true;
         }
+
+    while(completed < count) {
+
+        /* CPU IDLE */
+        // if no process is in queue, increase current time and check any processes arrives then
+        if(front == rear) {
+            ct++;
+            for(int i=0; i<count; i++)
+                if(p[i].at <= ct && !p[i].completed && !p[i].inQueue) {
+                    ENQUEUE(i);
+                    p[i].inQueue = true;
+                }
+            continue;
+        }
+
+        /* EXECUTION */
+        // get the first process is queue to execute
+        int idx = DEQUEUE();
+
+        // execute the process
+        printf("EXECUTING PID%d\n", p[idx].pid);
+        int execTime = (p[idx].rt > tq) ? tq : p[idx].rt;   // calculate execution time
+        p[idx].rt -= execTime;
+        ct += execTime;
+
+        /* POST EXECUTION */
+
+        // check arrived processes and also add those into the queue
+        for(int i=0; i<count; i++)
+            if(p[i].at <= ct && !p[i].completed && !p[i].inQueue) {
+                ENQUEUE(i);
+                p[i].inQueue = true;
+            }
+
+        // check if the process is executed completely
+        if(p[idx].rt == 0) {    // if executed completely then calculate required properties
+            p[idx].completed = true;
+            p[idx].tat = ct - p[idx].at;
+            p[idx].wt = p[idx].tat - p[idx].bt;
+            completed++;
+        } else    // if not executed completely then insert it into the queue again
+            ENQUEUE(idx);
     }
 
     // display

@@ -4,15 +4,15 @@
 
 typedef struct {
     int pid;
-    int at;      // Arrival Time
-    int bt;      // Burst Time
-    int rt;      // Remaining Time
-    int wt;      // Waiting Time
-    int tat;     // Turnaround Time
+    int at;
+    int bt;
+    int rt;
+    int wt;
+    int tat;
     bool completed;
 } PROCESS;
 
-/* Get process with minimum remaining time at current time */
+
 PROCESS* getNextProcess(PROCESS p[], int n, int ct) {
     PROCESS *shortest = NULL;
     int minRT = INT_MAX;
@@ -26,7 +26,7 @@ PROCESS* getNextProcess(PROCESS p[], int n, int ct) {
     return shortest;
 }
 
-/* Get next arrival time after current time */
+
 int getNextArrivalTime(PROCESS p[], int n, int ct) {
     int nextAT = INT_MAX;
 
@@ -60,7 +60,6 @@ int main() {
     while(completed < n) {
         PROCESS *cur = getNextProcess(p, n, ct);
 
-        /* CPU idle */
         if(cur == NULL) {
             ct++;
             continue;
@@ -68,7 +67,6 @@ int main() {
 
         int nextAT = getNextArrivalTime(p, n, ct);
 
-        /* No future arrival → execute fully */
         if(nextAT == -1 || ct + cur->rt <= nextAT) {
             ct += cur->rt;
             cur->rt = 0;
@@ -78,7 +76,7 @@ int main() {
             cur->tat = ct - cur->at;
             cur->wt  = cur->tat - cur->bt;
         }
-        /* Preemption occurs */
+
         else {
             int execTime = nextAT - ct;
             cur->rt -= execTime;
