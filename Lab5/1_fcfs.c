@@ -30,12 +30,35 @@ PROCESS* getProcesses(PROCESS *head, int *count) {
     }
 }
 
+void sortProcesses(PROCESS **head) {
+    PROCESS *curr = *head;
+    while(curr->next) {
+        PROCESS *temp = curr->next;
+        while(temp) {
+            if(curr->arrivalTime > temp->arrivalTime) {
+                PROCESS dummy = *temp;
+                temp->pid = curr->pid;
+                temp->arrivalTime = curr->arrivalTime;
+                temp->burstTime = curr->burstTime;
+                curr->pid = dummy.pid;
+                curr->arrivalTime = dummy.arrivalTime;
+                curr->burstTime = dummy.burstTime;
+            }
+            temp = temp->next;
+        }
+        curr = curr->next;
+    }
+}
+
 int main() {
     int count = 0;  // initiate count
     int currentTime = 0;    // initiate current time
     int totalWaitTime = 0;  // inititate total wait time
     int totalTurnAroundTime = 0;    // initiate total turn around time
     PROCESS *processes = getProcesses(NULL, &count);    // take processes input in an empty linked list
+
+    // sort the processes according to their arrival times
+    sortProcesses(&processes);
 
     // execute the processes according to sjf algorithm
     PROCESS *temp = processes;
